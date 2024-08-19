@@ -1,19 +1,18 @@
 const express = require('express')
-const userModel = require("./Database/connectMongoDB")
+const connectMongoDB = require("./Database/connectMongoDB")
+const { login , signup } = require("./Controllers/User_Auth")
 const app = express()
 
 app.get('/', (req, res) => {
     res.send("hey")
 })
 
-app.get('/create', async (req, res) => {
-    let createduser = await userModel.create({
-        name: "Nikhil",
-        username: "Nikhil",
-        email: "abc@gmail.com",
-    })
+app.post('/login', login)
+app.post('/signup', signup)
 
-    res.send(createduser)
-})
+const PORT = 4000;
 
-app.listen(4000);
+app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}`);
+	connectMongoDB();
+});

@@ -20,10 +20,40 @@ const signup = async (req, res) => {
             contactNumber,
             location
 		});
-
+        res.status(200).json({
+			_id: User.userId,
+			username: User.name,
+			email: User.email,
+		});
     } 
     catch (error) {
         console.log("Error in signup controller", error.message);
 		res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+const login = async (req, res) => {
+    try {
+        const { password, email} = req.body;
+        const existUser = await User.findOne(email);
+
+        if(!existUser) {
+            return res.status(400).json({ error: "Email not exist..." });
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+
+        if(!isPasswordCorrect){
+            return res.status(400).json({ error: "Wrong password..." });
+        }
+
+        res.status(200).json({
+			_id: User.userId,
+			username: User.name,
+			email: User.email,
+		});
+    } 
+    catch (error) {
+        
+    }
+}
